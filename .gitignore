@@ -1,0 +1,70 @@
+*~
+*.log
+tmp
+dump
+
+# JS
+*.map
+
+# Idea
+#**/.idea
+#**/.idea_modules
+#**/.classpath
+#**/.project
+#**/.settings
+#*.iml
+#*.ipr
+#*.iws
+**/out/
+
+# Idea updated
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+
+# Idea Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# Idea Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
+
+## File-based project format:
+*.iws
+
+
+
+# SBT
+dist
+**/project/.sbtserver.lock
+**/project/boot
+**/project/target
+**/project/plugins/target
+**/target
+**/.target
+.sbtserver
+
+# Play
+logs
+RUNNING_PID
+
+# NPM
+**/node_modules
+npm-debug.log
+
+# web module
+
+web/public
+web/dist
+web/typings
