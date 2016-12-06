@@ -76,9 +76,9 @@ object HexConversions {
       ch == ' '
   }
 
-  def ~(hexString:String): String = {
-    hexString.asBytes.map(b => (~b).byteValue).asHexString
-  }
+  //def unary_~(hexString:String): String = {
+  //  hexString.asBytes.map(b => (~b).byteValue).asHexString
+  //}
 
   implicit class HexString(private val str: String) {
 
@@ -88,7 +88,9 @@ object HexConversions {
 
     def fromHexStringToInts: Iterator[Int] = str.sliding(2,2).map(Integer.parseInt(_, 16))
 
-
+    def unary_~ : String = {
+      str.asBytes.map(b => (~b).byteValue).asHexString
+    }
 
   }
 

@@ -1,9 +1,8 @@
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.{KeyGenerator, SecretKey}
 
-import com.bridgecanada.utils.HexConversions
 import com.bridgecanada.utils.HexConversions._
-import org.scalatest.{FlatSpec, FunSuite, Matchers}
+import org.scalatest.{FlatSpec, Matchers}
 
 
 /**
@@ -25,20 +24,18 @@ class Chapter3Test extends FlatSpec with Matchers {
 
   "3.10" should "demonstrate complementation property in DES" in {
     val plainTextHex = "539b333b39706d149028cfe1d9d4a407"
-    val desKey: SecretKey = createDesKey
+    val desKey: SecretKey = createDesKey()
 
     val cipherText = Chapter3.encrypt310(plainTextHex, desKey)
-    val cipherTextComplement = Chapter3.encrypt310(HexConversions.~(plainTextHex), ComplementKey(desKey))
+    val cipherTextComplement = Chapter3.encrypt310(~plainTextHex, ComplementKey(desKey))
 
-    cipherText should equal(HexConversions.~(cipherTextComplement))
+    cipherText shouldEqual ~cipherTextComplement
 
   }
 
-  private def ComplementKey(desKey: SecretKey) = {
-    new SecretKeySpec(HexConversions.~(desKey.getEncoded.asHexString).asBytes, "DES")
-  }
+  private def ComplementKey(desKey: SecretKey) =
+    new SecretKeySpec((~desKey.getEncoded.asHexString).asBytes, "DES")
 
-  private def createDesKey = {
-    KeyGenerator.getInstance("DES").generateKey();
-  }
+  private def createDesKey() = KeyGenerator.getInstance("DES").generateKey()
+
 }

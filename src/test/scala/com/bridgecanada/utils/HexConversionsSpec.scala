@@ -39,9 +39,9 @@ class HexConversionsSpec extends FlatSpec with Matchers {
   }
 
   it should "return the complement of a hex string" in {
-    HexConversions.~("000000") shouldEqual "ffffff"
-    HexConversions.~("ffffff") shouldEqual "000000"
-    HexConversions.~(HexConversions.~("296c93fdf499aaeb4194babc2e63561d")) shouldEqual "296c93fdf499aaeb4194babc2e63561d"
+    ~"000000" shouldEqual "ffffff"
+    ~"ffffff" shouldEqual "000000"
+    ~(~"296c93fdf499aaeb4194babc2e63561d") shouldEqual "296c93fdf499aaeb4194babc2e63561d"
 
   }
 
