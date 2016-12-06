@@ -6,11 +6,12 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
-public class Chapter3J {
+class Chapter3J {
 
-    public static String decryptQuestion38(String hexCipherText, String hexSecretKey)
+
+    // rewriting scala answer
+    static String decryptQuestion38(@SuppressWarnings("SameParameterValue") String hexCipherText, String hexSecretKey)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
 
