@@ -2,7 +2,6 @@ package com.bridgecanada.utils
 
 import HexConversions._
 import org.scalatest.{FlatSpec, Matchers}
-//import org.scalatest.Assertions._
 
 /**
   * Created by bridge on 05/12/16.
@@ -38,4 +37,12 @@ class HexConversionsSpec extends FlatSpec with Matchers {
   it should "convert an array of bytes to an ascii string" in {
     helloWorldBytes.readable shouldEqual helloWorldAscii
   }
+
+  it should "return the complement of a hex string" in {
+    HexConversions.~("000000") shouldEqual "ffffff"
+    HexConversions.~("ffffff") shouldEqual "000000"
+    HexConversions.~(HexConversions.~("296c93fdf499aaeb4194babc2e63561d")) shouldEqual "296c93fdf499aaeb4194babc2e63561d"
+
+  }
+
 }
