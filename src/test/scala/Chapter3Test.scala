@@ -11,18 +11,21 @@ import org.scalatest.{FlatSpec, Matchers}
 class Chapter3Test extends FlatSpec with Matchers {
 
   "3.8" should "decrypt an AES cipherText" in {
-    Chapter3.decrypt38("539b333b39706d149028cfe1d9d4a407",
+    Chapter3.decrypt38(
+      "539b333b39706d149028cfe1d9d4a407",
       "80000000000000000000000000000000" +
-      "00000000000000000000000000000001") should equal("80706050403020100807060504030201")
+      "00000000000000000000000000000001") shouldEqual "80706050403020100807060504030201"
   }
 
   "3.9" should "encrypt an AES plainText" in {
-    Chapter3.encrypt39("296c93fdf499aaeb4194babc2e63561d",
+    Chapter3.encrypt39(
+      "296c93fdf499aaeb4194babc2e63561d",
       "80000000000000000000000000000000" +
-      "00000000000000000000000000000001") should equal("80000000000000000000000000000001")
+      "00000000000000000000000000000001") shouldEqual "80000000000000000000000000000001"
   }
 
   "3.10" should "demonstrate complementation property in DES" in {
+
     val plainTextHex = "539b333b39706d149028cfe1d9d4a407"
     val desKey: SecretKey = createDesKey()
 
