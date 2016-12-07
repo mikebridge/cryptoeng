@@ -39,3 +39,6 @@ by encoding a particular m and ~m with that key, then you only need to exclusive
 keyspace to match m with c and ~m with ~c Because E<sub>~k</sub>(~m) will equal ~E<sub>k</sub>(m), 
 you effectively get two c values calling E once, you reduce the steps to 2<sup>55</sup>.
 
+
+3.8-10) [code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/scala/Chapter3.scala)
+     - [tests](https://github.com/mikebridge/cryptoeng/blob/master/src/test/scala/Chapter3Test.scala)

@@ -1,35 +1,34 @@
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 import javax.crypto.{Cipher, SecretKey}
 
 import com.bridgecanada.utils.HexConversions._
 
-object Chapter3 {
+object Chapter4 {
 
-  // Question 3.8
-  def decrypt38(hexCipherText: String, hexKey: String): String = {
-    val cipher = Cipher.getInstance("AES/ECB/NoPadding")
+  // Question 4.4
+  def decrypt44(hexCipherText: String, hexKey: String): String = {
+    val ivlength = hexKey.asBytes.length / 2
+    val cipher = Cipher.getInstance("AES/CBC/NoPadding")
     val secretKey = new SecretKeySpec(hexKey.asBytes, "AES")
-    cipher.init(Cipher.DECRYPT_MODE, secretKey)
-    cipher.doFinal(hexCipherText.asBytes).asHexString
+    val iv = getIV(hexCipherText,ivlength)
+    val ivspec = new IvParameterSpec(iv)
+
+    cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec)
+
+    cipher.doFinal(hexCipherText.asBytes).drop(ivlength).asHexString.readable
   }
 
-  // Question 3.9
-  def encrypt39(hexPlainText: String, hexKey: String): String = {
+  // Question 4.5
+  def encrypt45(hexPlainText: String, hexKey: String): String = {
     val cipher = Cipher.getInstance("AES/ECB/NoPadding")
+    println(hexPlainText.readable)
     val secretKey = new SecretKeySpec(hexKey.asBytes, "AES")
     cipher.init(Cipher.ENCRYPT_MODE, secretKey)
     cipher.doFinal(hexPlainText.asBytes).asHexString
   }
 
-  // Question 3.10
-  def encrypt310(hexPlainText: String, secretKey: SecretKey): String = {
-    val cipher = Cipher.getInstance("DES/ECB/NoPadding")
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-    cipher.doFinal(hexPlainText.asBytes).asHexString
-  }
-
-
-
+  def getIV(cipherText:String, length: Int): Array[Byte] =
+    cipherText.asBytes.take(length)
 
   def secretKeySpec(key: String): SecretKeySpec =
     new SecretKeySpec(key.asBytes, "AES")

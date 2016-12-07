@@ -1,41 +1,45 @@
-3.1) 2<sup>64</sup> * 2<sup>80+80</sup> = 2 <sup>204</sup>
+4.1) When a block has no padding (i.e. n==0) there is no way to tell if characters that 
+look like padding are part of the message or padding.
 
-3.2) 
-- DES has 16 rounds 
-- A DES key is 56 bits
-- A DES block is 64 bits
-- 3DES encrypts or decrypts with DES three times
+4.2) 
+- *fixed IV* : has the same properties as ECB, therefore it's insecure
+- *counter IV* : because it is not random, it may create identical ciphertext blocks when 
+      XORing similar messages
+- *random IV* : can generate unique IVs without the overhead of managing them, but since the
+      recipient needs the IV, it adds to the message size.  
+- *nonce IV* : message size can be smaller than for random IV but it introduces overhead for the
+      developer.
+      
+4.3) Because C and C' were generated with the same key and nonce:
+- C<sub>1</sub> = P<sub>1</sub> &#8853; F(K, nonce) and C<sub>2</sub> = P<sub>2</sub> &#8853; F(K, nonce)
+- so, C<sub>1</sub> &#8853; P<sub>1</sub> = C<sub>2</sub> &#8853; P<sub>2</sub>
+- => P<sub>2</sub> = C<sub>1</sub> &#8853; C<sub>2</sub> &#8853; P<sub>1</sub>
 
-3.3)
-- AES has 128, 192 and 256 bit keys
-- 10 rounds for 128, 12 for 192 and 14 for 256
-- AES block size is 128 bits
+```scala
+import com.bridgecanada.utils.HexConversions._
+val c1 = "4664dc0697bbfe69330715079ba6c23d2b84de4f908d7d34aace968b64f3df75"
+val c2 = "517ecc05c3bdea3b33570e1bd897d5307bd0916b8d826b35b78bbb8d74e2c73b"
+val p1 = "43727970746f6772617068792043727970746f6772617068792043727970746f"
+p1.readable
+=> "Cryptography Cryptography Crypto"
 
-3.4)
-- You might choose 3DES when there are limitations on the cipher you can use.
-- You might choose AES when you need speed and feel more comfortable with a newer standard 
+(c1 ^ c2 ^ p1).readable
+=>"This is a secret   Confidential!"
+```
 
-3.5)
-- 2<sup>-26</sup>s * 2<sup>56</sup> = 2<sup>30</sup> / 3600 &#8773; 298262 hours
-- 2<sup>30</sup> / 2<sup>14</sup> / 3600 = 18 hours
+4.4) [code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/scala/Chapter4.scala)
+      - [tests](https://github.com/mikebridge/cryptoeng/blob/master/src/test/scala/Chapter4Test.scala)
+     
+4.5) [code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/scala/Chapter4.scala)
+     - [tests](https://github.com/mikebridge/cryptoeng/blob/master/src/test/scala/Chapter4Test.scala)
+     
+4.6)
+Given:
+- C<sub>2</sub> = E<sub>K</sub>(P<sub>2</sub> &#8853; C<sub>1</sub>)
+- C<sub>1</sub>' = E<sub>K</sub>(P<sub>1</sub>' &#8853; C<sub>0</sub>')
+- C<sub>1</sub>' = C<sub>2</sub>
 
-3.6) 
-- take one of the plaintexts and split it into two 32-bit pairs, L0 and R0
-- brute-force all the 48-bit values of K<sub>0</sub> and K<sub>1</sub> where: 
-    - L<sub>1</sub> = R<sub>0<sub>,     
-    - R<sub>1</sub> = L<sub>0</sub> &#8853; F(R<sub>0</sub>,K<sub>0</sub>),
-    - L<sub>2</sub> = R<sub>1</sub>,
-    - R<sub>2</sub> = L<sub>1</sub> &#8853; F(R<sub>1</sub>,K<sub>1</sub>),
-    - C = L<sub>2</sub> || R<sub>2</sub>
-    - C = (L<sub>0</sub> &#8853; F(R<sub>0</sub>,K<sub>0</sub>)) ||  R<sub>0</sub> &#8853; F(L<sub>0</sub> &#8853; F(R<sub>0</sub>,K<sub>0</sub>), K<sub>1</sub>)
-    
-So you could exclusively search the left half of this equation once, and the right have once, which would be
-2<sup>48</sup> + 2<sup>48</sup>, which is less than 2<sup>56</sup>.
-
-- With the found k1 and k2 values, you can create a determiner by running DES2 on the other plaintext/ciphertext pairs.
-  
-3.7) A system might encrypt some text via DES and a single key.  You can perform a Chosen Plaintext Attack 
-by encoding a particular m and ~m with that key, then you only need to exclusively search half the 
-keyspace to match m with c and ~m with ~c Because E<sub>~k</sub>(~m) will equal ~E<sub>k</sub>(m), 
-you effectively get two c values calling E once, you reduce the steps to 2<sup>55</sup>.
-
+Then:
+- E<sub>K</sub>(P<sub>2</sub> &#8853; C<sub>1</sub>) = E<sub>K</sub>(P<sub>1</sub>' &#8853; C<sub>0</sub>')
+- P<sub>2</sub> &#8853; C<sub>1</sub> = P<sub>1</sub>' &#8853; C<sub>0</sub>'
+- P<sub>1</sub>' = P<sub>2</sub> &#8853; C<sub>1</sub> &#8853; C<sub>0</sub>'

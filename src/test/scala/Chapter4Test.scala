@@ -5,40 +5,26 @@ import com.bridgecanada.utils.HexConversions._
 import org.scalatest.{FlatSpec, Matchers}
 
 
-/**
-  * Created by bridge on 06/12/16.
-  */
-class Chapter3Test extends FlatSpec with Matchers {
+class Chapter4Test extends FlatSpec with Matchers {
 
-  "3.8" should "decrypt an AES cipherText" in {
-    Chapter3.decrypt38(
-      "539b333b39706d149028cfe1d9d4a407",
+  "4.4" should "decrypt an AES cipherText with an IV" in {
+    Chapter4.decrypt44(
+      "87f348ff79b811af3857d6718e5f0f91" +
+      "7c3d26f77377635a5e43e9b5cc5d0592" +
+      "6E26ffc5220dc7d405f1708670e6e017",
       "80000000000000000000000000000000" +
-      "00000000000000000000000000000001") shouldEqual "80706050403020100807060504030201"
+      "00000000000000000000000000000001") shouldEqual "Another secret!  And another.   "
   }
 
-  "3.9" should "encrypt an AES plainText" in {
-    Chapter3.encrypt39(
-      "296c93fdf499aaeb4194babc2e63561d",
+  "4.5" should "encrypt an AES plainText in ECB mode" in {
+    // p = "block ciphers   hash functions xblock ciphers"
+    Chapter4.encrypt45(
+      "626c6f636b2063697068657273202020" +
+      "686173682066756e6374696f6e732078" +
+      "626c6f636b2063697068657273202020",
       "80000000000000000000000000000000" +
-      "00000000000000000000000000000001") shouldEqual "80000000000000000000000000000001"
+      "00000000000000000000000000000001") shouldEqual
+      "9b75b376fdc783bd0dff4ac44078ea8e6655f4222c0d413364f748e08f1805139b75b376fdc783bd0dff4ac44078ea8e" // ??
   }
-
-  "3.10" should "demonstrate complementation property in DES" in {
-
-    val plainTextHex = "539b333b39706d149028cfe1d9d4a407"
-    val desKey: SecretKey = createDesKey()
-
-    val cipherText = Chapter3.encrypt310(plainTextHex, desKey)
-    val cipherTextComplement = Chapter3.encrypt310(~plainTextHex, ComplementKey(desKey))
-
-    cipherText shouldEqual ~cipherTextComplement
-
-  }
-
-  private def ComplementKey(desKey: SecretKey) =
-    new SecretKeySpec((~desKey.getEncoded.asHexString).asBytes, "DES")
-
-  private def createDesKey() = KeyGenerator.getInstance("DES").generateKey()
 
 }
