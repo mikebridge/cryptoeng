@@ -42,3 +42,4 @@ you effectively get two c values calling E once, you reduce the steps to 2<sup>5
 
 3.8-10) [code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/scala/Chapter3.scala)
      - [tests](https://github.com/mikebridge/cryptoeng/blob/master/src/test/scala/Chapter3Test.scala)
+     - [java code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/java/Chapter3J.scala)
