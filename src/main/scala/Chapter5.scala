@@ -1,3 +1,4 @@
+import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 
@@ -18,9 +19,12 @@ object Chapter5 {
   def MD5(s: String): String = {
     // Besides "MD5", "SHA-256", and other hashes are available
     val m = java.security.MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8"))
-    m.map("%02x".format(_)).mkString
+    m.asHexString
   }
 
+  def SHA512(s:String) :String = MessageDigest.getInstance("SHA-512")
+      .digest(s.getBytes("UTF-8"))
+      .asHexString
 
 }
 
