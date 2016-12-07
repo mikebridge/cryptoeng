@@ -21,7 +21,6 @@ object Chapter4 {
   // Question 4.5
   def encrypt45(hexPlainText: String, hexKey: String): String = {
     val cipher = Cipher.getInstance("AES/ECB/NoPadding")
-    println(hexPlainText.readable)
     val secretKey = new SecretKeySpec(hexKey.asBytes, "AES")
     cipher.init(Cipher.ENCRYPT_MODE, secretKey)
     cipher.doFinal(hexPlainText.asBytes).asHexString
