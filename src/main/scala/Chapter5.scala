@@ -2,7 +2,12 @@ import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 
+//import org.scalameter.api._
+
 import com.bridgecanada.utils.HexConversions._
+
+import scala.annotation.tailrec
+import scala.collection.immutable.{HashMap, HashSet}
 
 object Chapter5 {
 
@@ -25,6 +30,31 @@ object Chapter5 {
   def SHA512(s:String) :String = MessageDigest.getInstance("SHA-512")
       .digest(s.getBytes("UTF-8"))
       .asHexString
+
+  def SHA512n(s:String, bytes: Int) :String = MessageDigest.getInstance("SHA-512")
+    .digest(s.getBytes("UTF-8"))
+    .take(bytes)
+    .asHexString
+
+
+  def birthday(hashFunction: String => String, messageGenerator: Iterator[String]): BirthdayResult = {
+    @tailrec def birthday(cache: HashMap[String,String], iterations:Int): BirthdayResult = {
+      val key = messageGenerator.next
+      val hash = hashFunction(key)
+      if (cache.contains(hash)) {
+        BirthdayResult(key, cache(hash), iterations)
+      } else {
+        birthday(cache + (hash -> key), iterations + 1)
+      }
+    }
+
+    birthday(new HashMap[String, String], 0)
+
+  }
+
+  case class BirthdayResult(m1:String, m2:String, iterations: Int)
+
+
 
 }
 
