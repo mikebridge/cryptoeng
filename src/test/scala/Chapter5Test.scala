@@ -24,6 +24,8 @@ class Chapter5Test extends FlatSpec with Matchers {
 //        "ebe6683b023669d64370d2cbdd38acdd"
 //  }
 
+  def counter(from: Int): Stream[Int] = from #:: counter(from + 1)
+
   "5.2" should "calculate a SHA-512 hash" in {
     Chapter5.SHA512("48656c6c6f2c20776f726c642e202020") shouldEqual
       "7c532e636b924f5c37999adce795740d2d8018be6aa99e24bca1cf77c8c3c4d2c0eb22d8f4f08306f5052a8ef498fa3f4cb30735a6795132b390ec96e554abee"
@@ -49,8 +51,44 @@ class Chapter5Test extends FlatSpec with Matchers {
 
   }
 
-  "5.3" should "find a collision for a particular value in SHA-512-n" in {
+  "5.4" should "find a particular 1 byte collision for a in SHA-512-n" in {
+    val seededStringGenerator = stringGenerator(1)
+    findMatchingHash(seededStringGenerator, "a9", 1) shouldEqual((241, "jozNkogG3315waO"))
+    findMatchingHash(seededStringGenerator, "3d4b", 2) shouldEqual((6061, "KnHyGELdlUxFQyI"))
+    findMatchingHash(seededStringGenerator, "3a7f27", 3) shouldEqual((424106, "9nFBZ62OZzpRgf4"))
+    findMatchingHash(seededStringGenerator, "c3c0357c", 4) shouldEqual((65153227, "0VoV679AAmaZQIg"))
+  }
 
+  "5.4" should "average those and see how long they takg" in {
+    fail("todo")
+
+  }
+
+//  "5.3" should "find a particular 1 byte collision in a certain number of collisions for a in SHA-512-n" in {
+//    val seededStringGenerator = stringGenerator(1)
+//    findMatchingHash(seededStringGenerator, "a9", 1)._1 shouldEqual(241)
+//    findMatchingHash(seededStringGenerator, "3d4b", 2)._1 shouldEqual(6061)
+//    findMatchingHash(seededStringGenerator, "3a7f27", 3)._1 shouldEqual(424106)
+//    findMatchingHash(seededStringGenerator, "c3c0357c", 4)._1 shouldEqual(424106)
+//
+//  }
+
+
+//  private def findMatchingHash(seededStringGenerator: Iterator[String], goal: String): Int = {
+//    findMatchingHash(seededStringGenerator, goal, 1) match {
+//      case (iters, str) => iters
+//    }
+//  }
+
+  // return the iterations + the collision
+  private def findMatchingHash(stringGenerator: Iterator[String], goal: String, bytes: Int): (Int, String)= {
+    stringGenerator
+      .zipWithIndex
+      .map(str => (str._2, str._1, Chapter5.SHA512n(str._1, bytes))) // (index, str, hash)
+      .dropWhile(x => x._3 != goal)
+      .next() match {
+         case (index, str, hash) => (index, str)
+      }
   }
 
   private def runBirthdayNtimes(repetitions: Int, bytes: Int): Int = {

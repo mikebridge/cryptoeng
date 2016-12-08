@@ -34,3 +34,6 @@ So in theory we would expect the following:
 | 256   | sqrt(2<sup>256</sup>) = 3.4 x 10<sup>38</sup>
 | 512   | sqrt(2<sup>384</sup>) = 6.7 x 10<sup>57</sup>
 | 512   | sqrt(2<sup>512</sup>) = 1.2 x 10<sup>77</sup>
+
+
+5.6) See: http://ehash.iaik.tugraz.at/wiki/The_SHA-3_Zoo
