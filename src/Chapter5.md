@@ -36,4 +36,18 @@ So in theory we would expect the following:
 | 512   | sqrt(2<sup>512</sup>) = 1.2 x 10<sup>77</sup>
 
 
+5.4) 
+
+| bits | iterations | expected  
+| ----:| ----------:| ----------:
+| 8    | 151        | 256
+| 16   | 75910      | 65536
+| 24   | 9309706    | 16777216
+| 32   | | 2 ^ 32
+| 40   | | 2 ^ 40
+| 48   | | 2 ^ 48
+
+5.5) 
+
+
 5.6) See: http://ehash.iaik.tugraz.at/wiki/The_SHA-3_Zoo

@@ -40,7 +40,8 @@ class Chapter5Test extends FlatSpec with Matchers {
 
 
   "5.3" should "perform a birthday attack on SHA-512-n" in {
-    val totalIterations = 7 // one for each byte width
+    //val totalIterations = 7 // one for each byte width
+    val totalIterations = 5 // one for each byte width
     val byteVsIterations: Seq[(Int, Int)] = Range(1, totalIterations).map(
 
       bytes => (bytes, runBirthdayNtimes(5, bytes)))
@@ -59,20 +60,18 @@ class Chapter5Test extends FlatSpec with Matchers {
     findMatchingHash(seededStringGenerator, "c3c0357c", 4) shouldEqual((65153227, "0VoV679AAmaZQIg"))
   }
 
-  "5.4" should "average those and see how long they takg" in {
-    fail("todo")
+  "5.4" should "average those and see how long they take" in {
+    val totalIterations = 4 // one for each byte width
+    //val byteVsIterations: Seq[(Int, Int)] = Vector("a9", "3d4b", "3a7f27", "c3c0357c").map((goal: String) => {
+    val byteVsIterations: Seq[(Int, Int)] = Vector("a9", "3d4b", "3a7f27").map((goal: String) => {
+      val bytes = goal.length() / 2
+      (bytes * 8 , runFindHashNtimes(5, goal, bytes))
+    })
+    // should probably test for ranges of expected values instead
+    byteVsIterations shouldEqual Vector((8,151), (16,75910), (24,9309706) /*, (32, ) */)
 
+    //runFindHashNtimes(, "a9", 1) shouldEqual((241, "jozNkogG3315waO"))
   }
-
-//  "5.3" should "find a particular 1 byte collision in a certain number of collisions for a in SHA-512-n" in {
-//    val seededStringGenerator = stringGenerator(1)
-//    findMatchingHash(seededStringGenerator, "a9", 1)._1 shouldEqual(241)
-//    findMatchingHash(seededStringGenerator, "3d4b", 2)._1 shouldEqual(6061)
-//    findMatchingHash(seededStringGenerator, "3a7f27", 3)._1 shouldEqual(424106)
-//    findMatchingHash(seededStringGenerator, "c3c0357c", 4)._1 shouldEqual(424106)
-//
-//  }
-
 
 //  private def findMatchingHash(seededStringGenerator: Iterator[String], goal: String): Int = {
 //    findMatchingHash(seededStringGenerator, goal, 1) match {
@@ -91,6 +90,12 @@ class Chapter5Test extends FlatSpec with Matchers {
       }
   }
 
+  private def runFindHashNtimes(repetitions: Int, goal: String, bytes: Int): Int = {
+    val seededStringGenerator = stringGenerator(repetitions)
+    runAndAverageResults(repetitions, () => findMatchingHash(seededStringGenerator, goal, bytes)._1)
+  }
+
+
   private def runBirthdayNtimes(repetitions: Int, bytes: Int): Int = {
     val seededStringGenerator = stringGenerator(repetitions)
     runAndAverageResults(repetitions, () => runBirthdayWithBytePrefixLength(bytes, seededStringGenerator).iterations)
@@ -99,7 +104,6 @@ class Chapter5Test extends FlatSpec with Matchers {
   private def runAndAverageResults(repetitions: Int, fn: () => Int ): Int =
     (Range(0, repetitions).map(_ => fn()).sum * 1.0 / repetitions).toInt
 
-  
 
   private def runBirthdayWithBytePrefixLength(bytes: Int, stringGenerator: Iterator[String]): BirthdayResult =
     Chapter5.birthday(x => Chapter5.SHA512n(x, bytes), stringGenerator)

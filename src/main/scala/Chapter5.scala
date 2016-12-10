@@ -36,6 +36,9 @@ object Chapter5 {
     .take(bytes)
     .asHexString
 
+  def SHA512nBytes(s:String, bytes: Int): Array[Byte] = MessageDigest.getInstance("SHA-512")
+    .digest(s.getBytes("UTF-8"))
+    .take(bytes)
 
   def birthday(hashFunction: String => String, messageGenerator: Iterator[String]): BirthdayResult = {
     @tailrec def birthday(cache: HashMap[String,String], iterations:Int): BirthdayResult = {
