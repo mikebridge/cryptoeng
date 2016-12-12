@@ -10,3 +10,7 @@ Exercises for [Cryptography Engineering](https://www.amazon.ca/Cryptography-Engi
 
 [Chapter 5](https://github.com/mikebridge/cryptoeng/blob/master/src/Chapter5.md)
 
+[Chapter 6](https://github.com/mikebridge/cryptoeng/blob/master/src/Chapter6.md)
+
+[Chapter 7](https://github.com/mikebridge/cryptoeng/blob/master/src/Chapter7.md)
+

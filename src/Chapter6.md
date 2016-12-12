@@ -51,4 +51,5 @@ Therefore H<sub>2</sub> = H<sub>2</sub>'
 6.4) This question doesn't make sense---doesn't "of your choice" mean you choosing the blocks arbitrarily?  
 Why would you have to justify an arbitrary choice mathematically?
 
-6.5) 
+6.5 - 6.7) [code](https://github.com/mikebridge/cryptoeng/blob/master/src/main/scala/Chapter6.scala)
+         - [tests](https://github.com/mikebridge/cryptoeng/blob/master/src/test/scala/Chapter6Test.scala)
