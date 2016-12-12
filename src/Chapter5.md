@@ -47,7 +47,35 @@ So in theory we would expect the following:
 | 40   | | 2 ^ 40
 | 48   | | 2 ^ 48
 
-5.5) 
+5.5)
+Given:
+- K = {0,1}<sup>256</sup>
+- H<sub>0</sub> = {0}<sup>128</sup>
+- m = m<sub>1</sub>, ..., m<sub>k</sub>
+- H<sub>i</sub> = AES<sub>K</sub>(H<sub>i-1</sub> &#8853; m<sub>i</sub>)
+
+And
+1. m' = m<sub>1</sub>', m<sub>2</sub>' 
+2. m<sub>1</sub>' = m<sub>2</sub> &#8853; H<sub>1</sub>
+3. m<sub>2</sub>' = H<sub>2</sub> &#8853; m<sub>2</sub> &#8853; H<sub>1</sub>
+
+Then:
+4. H<sub>1</sub> = AES<sub>K</sub>({0}<sup>128</sup> &#8853; m<sub>1</sub>) = AES<sub>K</sub>(m<sub>1</sub>) 
+5. H<sub>2</sub> = AES<sub>K</sub>(H<sub>1</sub> &#8853; m<sub>2</sub>)
+6. H<sub>1</sub>' = AES<sub>K</sub>({0}<sup>128</sup> &#8853; m<sub>1</sub>') = AES<sub>K</sub>(m<sub>1</sub>')
+7. H<sub>2</sub>' = AES<sub>K</sub>(H<sub>1</sub>' &#8853; m<sub>2</sub>')
+ 
+Show that H<sub>2</sub> = H<sub>2</sub>'
+
+- H<sub>2</sub> = H<sub>2</sub>'
+- AES<sub>K</sub>(H<sub>1</sub> &#8853; m<sub>2</sub>) *[from 5]* = AES<sub>K</sub>(H<sub>1</sub>' &#8853; m<sub>2</sub>') *[from 7]*
+- AES<sub>K</sub>(m<sub>1</sub>') *[from 2]* =  AES<sub>K</sub>(H<sub>1</sub>' &#8853; m<sub>2</sub>')
+- AES<sub>K</sub>(m<sub>1</sub>') =  AES<sub>K</sub>(H<sub>1</sub>' &#8853; (H<sub>2</sub> &#8853; m<sub>2</sub> &#8853; H<sub>1</sub>))  *[from 3]* 
+- AES<sub>K</sub>(m<sub>1</sub>') = AES<sub>K</sub>(H<sub>1</sub>' &#8853; H<sub>2</sub> &#8853; m<sub>1</sub>')
+- AES<sub>K</sub>(m<sub>1</sub>') = AES<sub>K</sub>(AES(m<sub>1</sub>') &#8853; H<sub>2</sub> &#8853; m<sub>1</sub>') *[from 4]*
+- AES<sub>K</sub>(m<sub>1</sub>') = AES<sub>K</sub>(AES(m<sub>1</sub>') &#8853; AES<sub>K</sub>(H<sub>1</sub> &#8853; m<sub>2</sub>) &#8853; m<sub>1</sub>') *[from 5]*
+- AES<sub>K</sub>(m<sub>1</sub>') = AES<sub>K</sub>(AES(m<sub>1</sub>') &#8853; AES(m<sub>1</sub>') &#8853; m<sub>1</sub>') *[from 2]*
+- AES<sub>K</sub>(m<sub>1</sub>') = AES<sub>K</sub>(m<sub>1</sub>') Q.E.D.
 
 
 5.6) See: http://ehash.iaik.tugraz.at/wiki/The_SHA-3_Zoo
